@@ -1,9 +1,14 @@
-<?php
-
+<?php  
+header("Content-type: text/xml");
 $response = '<?xml version="1.0" encoding="UTF-8"?>
 <Response>
-    <Say voice="woman">Say what you want to say</Say>
-    <Record maxLength="20" />
+    <Say voice="woman">Flutter, say what you want to say!</Say>
+    <Record
+        action="goodbye.php"
+        method="GET"
+		finishOnKey="#"
+        maxLength="30" />
+    <Say>I did not hear a recording. Goodbye.</Say>
 </Response>';
 
 echo $response;
