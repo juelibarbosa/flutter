@@ -16,22 +16,17 @@ if (isset($_GET['code']))
 		curl_setopt($ch, CURLOPT_URL, $url); 
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_TIMEOUT, '3');
-		$content = trim(curl_exec($ch));
+		$token = trim(curl_exec($ch));
 		curl_close($ch);
 
-parse_str($content, $params);
-var_dump($params);
-
-		$token = file_get_contents($url);
-var_dump($token);		
-
-	    $params = null;
-     	parse_str($token, $params);
+		$params = null;
+		//$token = file_get_contents($url);
+		parse_str($token, $params);
 
      	$graph_url = "https://graph.facebook.com/me?access_token=" . $params['access_token'];
 
      	$user = json_decode(file_get_contents($graph_url));
-var_dump($user);exit;     	
+
      	// save all the auth stuff to session:
      	$_SESSION['auth'] = array(
      		'token' => $params['access_token'],
