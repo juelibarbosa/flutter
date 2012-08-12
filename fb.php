@@ -22,11 +22,11 @@ if (isset($_GET['code']))
 		$params = null;
 		//$token = file_get_contents($url);
 		parse_str($token, $params);
-
+var_dump($params);
      	$graph_url = "https://graph.facebook.com/me?access_token=" . $params['access_token'];
 
      	$user = json_decode(file_get_contents($graph_url));
-
+var_dump($user);exit;     	
      	// save all the auth stuff to session:
      	$_SESSION['auth'] = array(
      		'token' => $params['access_token'],
