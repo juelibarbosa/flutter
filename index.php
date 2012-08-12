@@ -1,19 +1,15 @@
 <?php 
 include_once('config.php');
-
-session_start();
+// Include the PHP TwilioRest library 
+include 'twilio/Services/Twilio.php';
 
 $A = isset($_SESSION['auth']) ? $_SESSION['auth']:null;
-
-//$fb_redirect_url = 'http://localhost:8080';
-$fb_redirect_url = 'http://flutter.phpfogapp.com';
 
 $listenings = array();
 if ($A)
 {
 	$listenings = getFriendsPicture($A['user']->id, $A['token'], 20);
 }
-
 
 function getFriends($fb_id, $token)
 {
@@ -52,21 +48,21 @@ function getFriendsPicture($fb_id, $token, $limit = null)
 
 	return $payload;
 }
-
-
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 	<head>
 		<title>Flutterly</title>
+		<meta charset="utf-8"/>
+		<meta name="language" content="en"/>
 	    <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" rel="stylesheet" />
 	    <link href="/css/app.css" rel="stylesheet" />
 
 		<script type="text/javascript" src="http://static.twilio.com/libs/twiliojs/1.0/twilio.js"></script>
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
 		<script src="//connect.facebook.net/en_US/all.js"></script>
-
+	</head>
 	<body>
 	<div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
@@ -89,7 +85,6 @@ function getFriendsPicture($fb_id, $token, $limit = null)
             </a>
 
             <ul class="dropdown-menu">
-              <li><a href="#">Profile</a></li>
               <li class="divider"></li>
               <li><a href="logout.php">Sign Out</a></li>
             </ul>
@@ -101,9 +96,7 @@ function getFriendsPicture($fb_id, $token, $limit = null)
           		</a>
           	</p>
           	<?php endif; ?>
-            
           </div>
-          
         </div>
       </div>
     </div>
@@ -141,26 +134,8 @@ function getFriendsPicture($fb_id, $token, $limit = null)
           <div class="hero-unit" id="stream">
             
 	<?php
-    // Include the PHP TwilioRest library 
-	include 'twilio/Services/Twilio.php';
-    
-	// facebook:
-	$fbAPIKey = '354211487989261';
-	$fbSecret = '3f71e62611254ff4fe09210955295686';
-
-    // Twilio REST API version 
-    $ApiVersion = "2010-04-01";
-    
-    // Set our AccountSid and AuthToken 
-	$accountSid = 'AC701ddef9bce91404467507cd870034db';
-	$authToken  = '1bd60ff00f687b84eea8408be49f6a71';
-	$baseAPIUrl = 'https://api.twilio.com';
-
 	$token = new Services_Twilio_Capability($accountSid, $authToken);
-	$token->allowClientOutgoing('AP6ea1770e590447ce5081b6c8ab18d818');
-
-	// @start snippet
-    // Instantiate a new Twilio Rest Client 
+	$token->allowClientOutgoing($twilioAppId);
 	$client = new Services_Twilio($accountSid, $authToken);
 	?>
 
@@ -190,7 +165,6 @@ Curabitur in odio urna. Nam vel nisi magna, non adipiscing mi. Maecenas semper v
 		</div>
 		<hr />
 	<?php endforeach; ?>            
-
     
     </div>
     <hr />

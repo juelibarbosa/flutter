@@ -2,9 +2,6 @@
 include_once('config.php');
 session_start();
 
-//$fb_redirect_url = 'http://localhost:8080';
-$fb_redirect_url = 'http://flutter.phpfogapp.com';
-
 if (isset($_GET['code']))
 {
 	$code = $_GET['code'];
