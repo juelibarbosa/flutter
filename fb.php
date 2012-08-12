@@ -18,10 +18,13 @@ if (isset($_GET['code']))
 		curl_setopt($ch, CURLOPT_TIMEOUT, '3');
 		$content = trim(curl_exec($ch));
 		curl_close($ch);
-print $content . "\n\n";
+
+parse_str($content, $params);
+var_dump($params);
 
 		$token = file_get_contents($url);
 var_dump($token);		
+
 	    $params = null;
      	parse_str($token, $params);
 
