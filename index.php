@@ -40,7 +40,7 @@ $A = isset($_SESSION['auth']) ? $_SESSION['auth']:null;
 
           	<?php else: ?>
           	<p id="login">
-          		<a href = "https://www.facebook.com/dialog/oauth/?client_id=354211487989261&redirect_uri=http://localhost:8080/fb.php">
+          		<a href = "https://www.facebook.com/dialog/oauth/?client_id=354211487989261&redirect_uri=http://flutter.phpfogapp.com/fb.php">
           		<img src = "/img/fb.png" /> <img src = "/img/twitter.png" />
           		</a>
           	</p>
