@@ -1,11 +1,59 @@
 <?php 
-include_once(config.php);
+include_once('config.php');
 
 session_start();
+
 $A = isset($_SESSION['auth']) ? $_SESSION['auth']:null;
 
 //$fb_redirect_url = 'http://localhost:8080';
 $fb_redirect_url = 'http://flutter.phpfogapp.com';
+
+$listenings = array();
+if ($A)
+{
+	$listenings = getFriendsPicture($A['user']->id, $A['token'], 20);
+}
+
+
+function getFriends($fb_id, $token)
+{
+	$url = "https://graph.facebook.com/$fb_id/friends?access_token=$token";
+
+	// Set query data here with the URL
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_URL, $url); 
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+	curl_setopt($ch, CURLOPT_TIMEOUT, '3');
+	$response = json_decode(trim(curl_exec($ch)));
+	curl_close($ch);
+
+	return $response->data;
+}
+
+function getFriendsPicture($fb_id, $token, $limit = null)
+{
+	$friends = getFriends($fb_id, $token);
+	shuffle($friends);
+
+	$payload = array();
+	$counter = 1;
+	foreach ($friends as $friend)
+	{
+		$payload[$friend->id] = $friend;
+		$payload[$friend->id]->picture = "https://graph.facebook.com/$friend->id/picture";
+
+		if ($counter == $limit)
+		{
+			break;
+		}
+
+		$counter++;
+	}
+
+	return $payload;
+}
+
+
 ?>
 
 <!DOCTYPE html>
@@ -32,7 +80,9 @@ $fb_redirect_url = 'http://flutter.phpfogapp.com';
           	<img src = "/img/logo.png" title="Flutterly" width="110px" />
           </a>
           <div class="btn-group pull-right">
-          	<?php if ($A): ?>
+
+          	<?php if ($A): ?>         	
+
             <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
               <i class="icon-user"></i> <?php echo $A['user']->name; ?>
               <span class="caret"></span>
@@ -74,6 +124,17 @@ $fb_redirect_url = 'http://flutter.phpfogapp.com';
  			<?php endif; ?>
 			<p><img id="mic" src = "/img/mic.png" alt="Flutter Now!"/></p>
 
+			<?php if($A): ?>
+			<h2>Listening To...</h2>
+			
+			<?php foreach ($listenings as $listening): ?>
+				<p>
+					<img src = "<?php echo $listening->picture; ?>" />
+					<?php echo $listening->name; ?>
+				</p>
+			<?php endforeach; ?>
+			<?php endif; ?>
+
           </div><!--/.well -->
         </div><!--/span-->
         <div class="span9">
@@ -103,11 +164,19 @@ $fb_redirect_url = 'http://flutter.phpfogapp.com';
 	$client = new Services_Twilio($accountSid, $authToken);
 	?>
 
-	<?php foreach($client->account->recordings as $recording): ?>
+	<?php foreach($client->account->recordings as $key => $recording): ?>
 	<?php $audio = $baseAPIUrl . $recording->uri; ?>
 		<div class="row">
 			<div class="span2 flutter_pic">
-				<img src = "/img/flutter.jpg" />
+				<?php if ($A): ?>
+    	 			<?php $flutters = $listenings; shuffle($flutters); ?>
+
+    	 			<?php $img_url = $flutters[$key]->picture; ?>
+					<img src = "<?php echo $img_url; ?>" />
+				<?php else: ?>
+					<img src = "/img/flutter.jpg" />
+				<?php endif; ?>
+				
 			</div>
 
 			<div class="span6">

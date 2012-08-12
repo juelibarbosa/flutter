@@ -1,5 +1,5 @@
 <?php
-include_once(config.php);
+include_once('config.php');
 session_start();
 
 //$fb_redirect_url = 'http://localhost:8080';
