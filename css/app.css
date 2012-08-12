@@ -1,6 +1,17 @@
-body {padding-top: 60px;padding-bottom: 40px;}
-.sidebar-nav {padding: 9px 0;}
+body {padding-top: 60px;padding-bottom: 40px; }
+.sidebar-nav {padding: 2px 0;}
+
+.navbar .container-fluid{background-color:#a5d2d9;}
 
 #facebook .mvs{color:red;}
 
 #login{margin:5px 0 0 0;}
+
+#profile h2{padding:0 0 0 10px;}
+#profile hr{margin:0;}
+#bio{padding:10px; text-align: justify;}
+#mic{text-align: center;}
+
+#stream hr{border-bottom:1px solid #c2c2c2;}
+p span.date_created{font-size: 12px;display:block;}
+div.flutter_pic{display:block;}

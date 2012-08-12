@@ -24,7 +24,9 @@ $A = isset($_SESSION['auth']) ? $_SESSION['auth']:null;
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="#">Flutterly</a>
+          <a class="brand" href="#" title="Flutterly">
+          	<img src = "/img/logo.png" title="Flutterly" width="110px" />
+          </a>
           <div class="btn-group pull-right">
           	<?php if ($A): ?>
             <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
@@ -47,13 +49,7 @@ $A = isset($_SESSION['auth']) ? $_SESSION['auth']:null;
           	<?php endif; ?>
             
           </div>
-
-          <div class="nav-collapse">
-            <ul class="nav">
-              <li class="active"><a href="/">Home</a></li>
-              <li><a href="/about.php">About</a></li>
-            </ul>
-          </div><!--/.nav-collapse -->
+          
         </div>
       </div>
     </div>
@@ -65,12 +61,19 @@ $A = isset($_SESSION['auth']) ? $_SESSION['auth']:null;
      		<?php if ($A): ?>
      			<h2><?php echo $A['user']->name; ?></h2>
      			<p id="bio"><?php echo $A['user']->bio; ?></p>
+
+     		<?php else: ?>
+     			<h2>Anonymous Flutter</h2>
+     			<hr />
+     			<p id="bio">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in velit tincidunt nulla pulvinar placerat. Nullam molestie luctus eros, eleifend fringilla nunc rutrum vel.</p>
  			<?php endif; ?>
+			<p><img id="mic" src = "/img/mic.png" alt="Flutter Now!"/></p>
+
           </div><!--/.well -->
         </div><!--/span-->
         <div class="span9">
-          <div class="hero-unit">
-            <p><img id="mic" src = "/img/mic.png" /></p>
+          <div class="hero-unit" id="stream">
+            
 	<?php
     // Include the PHP TwilioRest library 
 	include 'twilio/Services/Twilio.php';
@@ -93,74 +96,36 @@ $A = isset($_SESSION['auth']) ? $_SESSION['auth']:null;
 	// @start snippet
     // Instantiate a new Twilio Rest Client 
 	$client = new Services_Twilio($accountSid, $authToken);
+	?>
 
-	foreach($client->account->recordings as $recording) 
-	{
-		// $recording->duration seconds
-		$audio = $baseAPIUrl . $recording->uri;
-  		echo "<p><audio src=\"$audio\" controls preload=\"auto\" autobuffer width='50px'></audio></p>";
-  		//$recording->duration
-  		// $recording->sid
-  		// $recording->date_created
-	}
-    ?>
-            
-          </div>
-          <div class="row-fluid">
-            <div class="span4">
-              <h2>Heading</h2>
-              <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-              <p><a class="btn" href="#">View details &raquo;</a></p>
-            </div><!--/span-->
-            <div class="span4">
-              <h2>Heading</h2>
-              <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-              <p><a class="btn" href="#">View details &raquo;</a></p>
-            </div><!--/span-->
-            <div class="span4">
-              <h2>Heading</h2>
-              <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-              <p><a class="btn" href="#">View details &raquo;</a></p>
-            </div><!--/span-->
-          </div><!--/row-->
-          <div class="row-fluid">
-            <div class="span4">
-              <h2>Heading</h2>
-              <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-              <p><a class="btn" href="#">View details &raquo;</a></p>
-            </div><!--/span-->
-            <div class="span4">
-              <h2>Heading</h2>
-              <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-              <p><a class="btn" href="#">View details &raquo;</a></p>
-            </div><!--/span-->
-            <div class="span4">
-              <h2>Heading</h2>
-              <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-              <p><a class="btn" href="#">View details &raquo;</a></p>
-            </div><!--/span-->
-          </div><!--/row-->
-        </div><!--/span-->
-      </div><!--/row-->
+	<?php foreach($client->account->recordings as $recording): ?>
+	<?php $audio = $baseAPIUrl . $recording->uri; ?>
+		<div class="row">
+			<div class="span2 flutter_pic">
+				<img src = "/img/flutter.jpg" />
+			</div>
 
-      <hr>
+			<div class="span6">
+			<p>
+			<audio src="<?php echo $audio; ?>" controls preload="auto" autobuffer width="50px"></audio>
+			<span class="date_created">
+Curabitur in odio urna. Nam vel nisi magna, non adipiscing mi. Maecenas semper viverra purus vitae vestibulum.				
+				<?php echo date('m/d/Y H:i a', strtotime($recording->date_created)); ?></span>
+		</p>
+			</div>
+		</div>
+		<hr />
+	<?php endforeach; ?>            
+
+    
+    </div>
+    <hr />
 
       <footer>
-        <p>&copy; Flutter <?php echo date('Y'); ?></p>
+        <p>&copy; Flutterly <?php echo date('Y'); ?></p>
       </footer>
 
     </div><!--/.fluid-container-->
-
-
-
-
-
-		
-		
-	
-
-	
-
 
     <script src="http://twitter.github.com/bootstrap/assets/js/bootstrap-transition.js"></script>
     <script src="http://twitter.github.com/bootstrap/assets/js/bootstrap-alert.js"></script>
