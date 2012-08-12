@@ -1,14 +1,21 @@
+<?php 
+session_start();
+$A = isset($_SESSION['auth']) ? $_SESSION['auth']:null;
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>Flutter</title>
+		<title>Flutterly</title>
 	    <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" rel="stylesheet" />
 	    <link href="/css/app.css" rel="stylesheet" />
 
 		<script type="text/javascript" src="http://static.twilio.com/libs/twiliojs/1.0/twilio.js"></script>
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
-	<body>
+		<script src="//connect.facebook.net/en_US/all.js"></script>
 
+	<body>
 	<div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container-fluid">
@@ -17,22 +24,30 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="#">Flutter</a>
+          <a class="brand" href="#">Flutterly</a>
           <div class="btn-group pull-right">
-          	<p id="login"><img src = "/img/fb.png" /> <img src = "/img/twitter.png" /></p>
-          	<!--
+          	<?php if ($A): ?>
             <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-              <i class="icon-user"></i> Username
+              <i class="icon-user"></i> <?php echo $A['user']->name; ?>
               <span class="caret"></span>
             </a>
-			-->
 
             <ul class="dropdown-menu">
               <li><a href="#">Profile</a></li>
               <li class="divider"></li>
-              <li><a href="#">Sign Out</a></li>
+              <li><a href="logout.php">Sign Out</a></li>
             </ul>
+
+          	<?php else: ?>
+          	<p id="login">
+          		<a href = "https://www.facebook.com/dialog/oauth/?client_id=354211487989261&redirect_uri=http://localhost:8080/fb.php">
+          		<img src = "/img/fb.png" /> <img src = "/img/twitter.png" />
+          		</a>
+          	</p>
+          	<?php endif; ?>
+            
           </div>
+
           <div class="nav-collapse">
             <ul class="nav">
               <li class="active"><a href="/">Home</a></li>
@@ -46,25 +61,11 @@
     <div class="container-fluid">
       <div class="row-fluid">
         <div class="span3">
-          <div class="well sidebar-nav">
-            <ul class="nav nav-list">
-              <li class="nav-header">Sidebar</li>
-              <li class="active"><a href="#">Link</a></li>
-              <li><a href="#">Link</a></li>
-              <li><a href="#">Link</a></li>
-              <li><a href="#">Link</a></li>
-              <li class="nav-header">Sidebar</li>
-              <li><a href="#">Link</a></li>
-              <li><a href="#">Link</a></li>
-              <li><a href="#">Link</a></li>
-              <li><a href="#">Link</a></li>
-              <li><a href="#">Link</a></li>
-              <li><a href="#">Link</a></li>
-              <li class="nav-header">Sidebar</li>
-              <li><a href="#">Link</a></li>
-              <li><a href="#">Link</a></li>
-              <li><a href="#">Link</a></li>
-            </ul>
+          <div class="well sidebar-nav" id="profile">
+     		<?php if ($A): ?>
+     			<h2><?php echo $A['user']->name; ?></h2>
+     			<p id="bio"><?php echo $A['user']->bio; ?></p>
+ 			<?php endif; ?>
           </div><!--/.well -->
         </div><!--/span-->
         <div class="span9">
