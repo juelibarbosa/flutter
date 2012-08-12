@@ -7,9 +7,10 @@ body {padding-top: 60px;padding-bottom: 40px; }
 
 #login{margin:5px 0 0 0;}
 
-#profile h2{padding:0 0 0 10px;}
+#fb_profile{float:left;padding:5px 10px 0 10px;}
+#profile h2{margin:10px 0 0 0;}
 #profile hr{margin:0;}
-#bio{padding:10px; text-align: justify;}
+#bio{padding:10px; text-align: justify; clear: both;}
 #mic{text-align: center;}
 
 #stream hr{border-bottom:1px solid #c2c2c2;}

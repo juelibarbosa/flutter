@@ -1,7 +1,11 @@
 <?php 
+include_once(config.php);
+
 session_start();
 $A = isset($_SESSION['auth']) ? $_SESSION['auth']:null;
 
+//$fb_redirect_url = 'http://localhost:8080';
+$fb_redirect_url = 'http://flutter.phpfogapp.com';
 ?>
 
 <!DOCTYPE html>
@@ -42,7 +46,7 @@ $A = isset($_SESSION['auth']) ? $_SESSION['auth']:null;
 
           	<?php else: ?>
           	<p id="login">
-          		<a href = "https://www.facebook.com/dialog/oauth/?client_id=354211487989261&redirect_uri=http://flutter.phpfogapp.com/fb.php">
+          		<a href = "https://www.facebook.com/dialog/oauth/?client_id=354211487989261&redirect_uri=<?php echo $fb_redirect_url; ?>/fb.php">
           		<img src = "/img/fb.png" /> <img src = "/img/twitter.png" />
           		</a>
           	</p>
@@ -59,6 +63,7 @@ $A = isset($_SESSION['auth']) ? $_SESSION['auth']:null;
         <div class="span3">
           <div class="well sidebar-nav" id="profile">
      		<?php if ($A): ?>
+     			<img id="fb_profile" src = "https://graph.facebook.com/<?php echo $A['user']->id; ?>/picture" />
      			<h2><?php echo $A['user']->name; ?></h2>
      			<p id="bio"><?php echo $A['user']->bio; ?></p>
 
