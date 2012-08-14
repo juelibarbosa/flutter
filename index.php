@@ -73,7 +73,7 @@ function getFriendsPicture($fb_id, $token, $limit = null)
             <span class="icon-bar"></span>
           </a>
           <a class="brand" href="#" title="Flutterly">
-          	<img src = "/img/logo.png" title="Flutterly" width="110px" />
+          	Flutterly
           </a>
           <div class="btn-group pull-right">
 
